@@ -14,7 +14,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="www/config.js"></script>
-
     <script>
 let postsRef;
 let postsListener = null;
@@ -113,7 +112,7 @@ function createPost(author, content) {
     const postData = {
         author: currentUser.email,
         content: content,
-        timestamp: firebase.database.ServerValue.TIMESTAMP,
+        timestamp: (Data.now() - firebase.database.ServerValue.TIMESTAMP),
         userId: currentUser.uid
     };
 
@@ -460,6 +459,11 @@ $(function() {
     // Firebaseの初期化
     try {
         firebase.initializeApp(firebaseConfig);
+
+        $('#darkBtn').on('click', () => {
+            $('body').toggleClass('dark');
+        });
+
         console.log("Firebase initialized successfully");
         postsRef = firebase.database().ref('posts');
     } catch (error) {
@@ -519,6 +523,7 @@ window.addEventListener('unload', () => {
     <div class="container">
         <h1>掲示板アプリ</h1>
 
+        <button id = "darkBtn">ダークモード</button>
         <!-- メッセージ表示エリア -->
         <div id="messageArea"></div>
 
